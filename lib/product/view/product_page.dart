@@ -56,118 +56,147 @@ class _ProductPageState extends State<ProductPage> {
         title: SvgPicture.network('${productModel?.data?.brandLogo}'),
         //actions: [SvgPicture.network('${productModel?.data?.brandLogo}')],
       ),
-
       body: StreamBuilder(
-          stream: channel?.stream,
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data != null) {
-              productModel = convertData(snapshot.data!);
+        stream: channel?.stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            productModel = convertData(snapshot.data!);
 
-              return SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        height: 350,
-                        width: 200,
-                        child: PhotoView(
-                          backgroundDecoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.onSurface),
-                          imageProvider: selectedImage != null
-                              ? NetworkImage('${selectedImage?.image}')
-                              : NetworkImage(
-                                  '${productModel?.data?.productColors![0].image}'),
-                          minScale: 0.2,
-                          maxScale: 0.8,
-                        ),
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 350,
+                      width: 200,
+                      child: PhotoView(
+                        backgroundDecoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.onSurface),
+                        imageProvider: selectedImage != null
+                            ? NetworkImage('${selectedImage?.image}')
+                            : NetworkImage(
+                                '${productModel?.data?.productColors![0].image}'),
+                        minScale: 0.2,
+                        maxScale: 0.8,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                      child: Text('${productModel?.data?.productName}',
-                          style: const TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold)),
-                    ),
-                    const SizedBox(height: 10),
-                    SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                          children: List.generate(
-                              productModel!.data!.productSizes!.length,
-                              (index) => Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: OutlinedButton(
-                                    onPressed: null,
-                                    style: ButtonStyle(
-                                      shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0))),
-                                    ),
-                                    child: Text(
-                                        '${productModel!.data!.productSizes![index].size}',
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.purple)),
-                                  )))),
-                    ),
-                    const SizedBox(height: 10),
-                    SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List.generate(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('${productModel?.data?.productName}',
+                        style: const TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold)),
+                  ),
+                  
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Color',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Colors.black54),
+                        ),
+                        SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(
                               productModel!.data!.productColors!.length,
                               (index) => GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        selectedImage =
-                                            productImageList![index];
-                                        isSelected = true;
-                                      });
+                                onTap: () {
+                                  setState(() {
+                                    selectedImage = productImageList![index];
+                                    isSelected = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    height: 150,
+                                    width: 100,
+                                    fadeInCurve: Curves.easeInQuart,
+                                    imageUrl:
+                                        productImageList?[index].image ?? '',
+                                    placeholder: (context, url) {
+                                      return const Center(
+                                          child: CircularProgressIndicator(
+                                              strokeWidth: 1));
                                     },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: CachedNetworkImage(
-                                        fit: BoxFit.cover,
-                                        height: 150,
-                                        width: 100,
-                                        fadeInCurve: Curves.easeInQuart,
-                                        imageUrl:
-                                            productImageList?[index].image ?? '',
-                                        placeholder: (context, url) {
-                                          return const Center(
-                                              child: CircularProgressIndicator(
-                                                  strokeWidth: 1));
-                                        },
-                                        errorWidget: (context, url, error) {
-                                          return Center(
-                                            child: Image.asset(
-                                              'asset/image/ShopGo_logo.png',
-                                              scale: 5,
-                                            ),
-                                          );
-                                        },
-                                      ),
-
-                                      // Image.network(
-                                      //     '${productModel!.data!.productColors![index].image ?? ''}'),
-                                    ),
-                                  ))),
+                                    errorWidget: (context, url, error) {
+                                      return Center(
+                                        child: Image.asset(
+                                          'asset/image/ShopGo_logo.png',
+                                          scale: 5,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          }),
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Size',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Colors.black54),
+                        ),
+                        SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: List.generate(
+                              productModel!.data!.productSizes!.length,
+                              (index) => Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: OutlinedButton(
+                                  onPressed: null,
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0))),
+                                  ),
+                                  child: Text(
+                                      '${productModel!.data!.productSizes![index].size}',
+                                      style: const TextStyle(
+                                          fontSize: 20, color: Colors.purple)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
       floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Theme.of(context).colorScheme.primary,
           label: const Text(
@@ -199,7 +228,6 @@ class _ProductPageState extends State<ProductPage> {
                   ],
                 );
               })),
-      
     );
   }
 }

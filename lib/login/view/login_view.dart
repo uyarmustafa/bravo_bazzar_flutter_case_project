@@ -37,11 +37,45 @@ class LoginPage extends StatelessWidget {
                     child: Column(
                       children: [
                         TextFormField(
+                          decoration: InputDecoration(
+                            labelText: "User Name",
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 89, 0, 117),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 175, 1, 228),
+                                width: 2.0,
+                              ),
+                            ),
+                          ),
                           controller: usernameController,
                           textInputAction: TextInputAction.next,
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 89, 0, 117),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 175, 1, 228),
+                                width: 2.0,
+                              ),
+                            ),
+                          ),
                           controller: passwordController,
                           textInputAction: TextInputAction.next,
                           obscureText: true,
